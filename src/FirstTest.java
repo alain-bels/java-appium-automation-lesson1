@@ -79,7 +79,7 @@ public class FirstTest {
 
         waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
-                "Cannot find searc field",
+                "Cannot find search field",
                 5
         );
 
@@ -154,6 +154,41 @@ public class FirstTest {
                 "Cannot find \"Search…\" text",
                 "Search…",
                 searchText
+        );
+    }
+
+    @Test
+    public void testCancelSearchAndCheckResult() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search 'Search Wikipedia' input",
+                10
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Word",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id = 'org.wikipedia:id/page_list_item_container']" +
+                        "//*[@index = 1]"),
+                "Cannot find second item",
+                10
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/page_list_item_container"),
+                "Search result item is still present on the page",
+                5
         );
     }
 
