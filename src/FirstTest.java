@@ -136,6 +136,26 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testPresentSearch() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search 'Search Wikipedia' input",
+                10
+        );
+        WebElement searchField = waitForElementPresent(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                5
+        );
+        String searchText = searchField.getAttribute("text");
+
+        Assert.assertEquals(
+                "Cannot find \"Search…\" text",
+                "Search…",
+                searchText
+        );
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
