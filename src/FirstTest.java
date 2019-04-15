@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -191,6 +192,38 @@ public class FirstTest {
                 5
         );
     }
+
+    @Test
+    public void testCheckWordsInResultsOfSearch() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search 'Search Wikipedia' input",
+                10
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Word",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "Cannot find search field",
+                5
+        );
+
+        List<WebElement> headers = driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+        headers.forEach(webElement ->
+                Assert.assertTrue("Cannot find \"Word\" in title",
+                        webElement.getAttribute("text")
+                                .toLowerCase()
+                                .contains("Word".toLowerCase())
+                )
+        );
+    }
+
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
