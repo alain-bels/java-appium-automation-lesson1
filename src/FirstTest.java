@@ -718,6 +718,43 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testAssertTitle() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find search 'Search Wikipedia' input",
+                10
+        );
+
+        String searchLine = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                searchLine,
+                "Cannot find search input",
+                5
+        );
+
+        String articleTitle = "Java version history";
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id = 'org.wikipedia:id/page_list_item_container']" +
+                        "//*[@text = '" + articleTitle + "']"),
+                "Cannot find 'Java version history' topic searching by 'Java'",
+                10
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_header_container"),
+                "Cannot find article header container",
+                10
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title"
+        );
+    }
+
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
@@ -827,5 +864,13 @@ public class FirstTest {
     private String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeOutinSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeOutinSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private void assertElementPresent(By by, String error_message) {
+        WebElement element = driver.findElement(by);
+        if (element == null) {
+            String defaultMessage = "An element'" + by.toString() + "'supposed to be present";
+            throw new AssertionError(defaultMessage + " " + error_message);
+        }
     }
 }
