@@ -47,9 +47,15 @@ public class MyListsPageObject extends MainPageObject {
         this.waitForElementNotPresent(By.xpath(articleXpath), "Saved article still present with title" + articleTitle, 15);
     }
 
-    public void swipeByArticleToDelete(String articleTitle) throws InterruptedException
+    public void waitForArticleAndClick(String articleTitle)
     {
-        Thread.sleep(3000);
+        String articleXpath = getSavedArticleXpathByTitle(articleTitle);
+        this.waitForElementAndClick(By.xpath(articleXpath), "Cannot find article title", 10);
+    }
+
+    public void swipeByArticleToDelete(String articleTitle)
+    {
+
         this.waitForArticleToAppearByTitle(articleTitle);
         String articleXpath = getFolderXpathByName(articleTitle);
 

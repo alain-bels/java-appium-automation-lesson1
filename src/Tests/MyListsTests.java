@@ -19,7 +19,7 @@ public class MyListsTests extends CoreTestCase {
         articlePageObject.waitForTitleElement();
         String articleTitle = articlePageObject.getArticleTitle();
         String nameOfFolder = "Learning programming";
-        articlePageObject.addArticleToMyList(nameOfFolder);
+        articlePageObject.createNewMyListAndAddArticle(nameOfFolder);
         articlePageObject.closeArticle();
 
         NavigationUI navigationUI = new NavigationUI(driver);
@@ -34,184 +34,39 @@ public class MyListsTests extends CoreTestCase {
 
     @Test
     public void testSaveTwoArticlesToOneList() {
-        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
 
-        myListsPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find search 'Search Wikipedia' input",
-                10
-        );
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        String searchLine = "Java";
-        myListsPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                searchLine,
-                "Cannot find search input",
-                5
-        );
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
 
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/page_list_item_container']" +
-                        "//*[@text = 'Object-oriented programming language']"),
-                "Cannot find 'Object-oriented programming language' topic searching by 'Java'",
-                10
-        );
-
-        myListsPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title",
-                15
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageView[@content-desc = 'More options']"),
-                "Cannot find button to open article options ",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@text = 'Add to reading list']"),
-                "Cannot find option to add article to reading list",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/onboarding_button"),
-                "Cannot find 'Got it' tip overlay",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClear(
-                By.id("org.wikipedia:id/text_input"),
-                "Cannot find input to set name of articles folder",
-                5
-        );
-
+        articlePageObject.waitForTitleElement();
+        String firstArticleTitle = articlePageObject.getArticleTitle();
         String nameOfFolder = "Learning programming";
-        myListsPageObject.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/text_input"),
-                nameOfFolder,
-                "Cannot put text into articles folder input ",
-                5
-        );
+        articlePageObject.createNewMyListAndAddArticle(nameOfFolder);
+        articlePageObject.closeArticle();
 
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@text = 'OK']"),
-                "Cannot press OK button",
-                5
-        );
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Island of Indonesia");
+        articlePageObject.waitForTitleElement();
+        String secondArticleTitle = articlePageObject.getArticleTitle();
+        articlePageObject.addArticleToExistingMyList(nameOfFolder);
+        articlePageObject.closeArticle();
 
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc = 'Navigate up']"),
-                "Cannot close article, cannot find X link ",
-                10
-        );
+        NavigationUI navigationUI = new NavigationUI(driver);
+        navigationUI.clickMyLists();
 
-        myListsPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find search 'Search Wikipedia' input",
-                10
-
-        );
-
-        myListsPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                searchLine,
-                "Cannot find search input",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/page_list_item_container']" +
-                        "//*[@text = 'Island of Indonesia']"),
-                "Cannot find 'Set of several computer software products and specifications' topic searching by 'Java'",
-                10
-        );
-
-        myListsPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title",
-                15
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageView[@content-desc = 'More options']"),
-                "Cannot find button to open article options ",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@text = 'Add to reading list']"),
-                "Cannot find option to add article to reading list",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/item_title']"),
-                "Cannot find folder title by " + nameOfFolder,
-                15
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc = 'Navigate up']"),
-                "Cannot close article, cannot find X link ",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.FrameLayout[@content-desc = 'My lists']"),
-                "Cannot find navigation button to My list ",
-                5
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@text = 'Learning programming']"),
-                "Cannot find created folder ",
-                5
-        );
-
-        myListsPageObject.swipeElementToLeft(
-                By.xpath("//*[@text = 'Java (programming language)']"),
-                "Cannot find saved article"
-        );
-
-        myListsPageObject.waitForElementPresent(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/page_list_item_container']" +
-                        "//*[@text = 'island of Indonesia']"),
-                "Cannot find article title",
-                15
-        );
-
-        String titleSecondArticleinList = myListsPageObject.waitForElementAndGetAttribute(
-                By.id("org.wikipedia:id/page_list_item_title"),
-                "text",
-                "Cannot find title of article in list",
-                15
-        );
-
-        myListsPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/page_list_item_container']" +
-                        "//*[@text = 'island of Indonesia']"),
-                "Cannot find 'set of several computer software products and specifications' topic searching by 'Java'",
-                10
-        );
-
-        myListsPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title",
-                15
-        );
-
-        String titleSecondArticleOnViewPage = myListsPageObject.waitForElementAndGetAttribute(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "text",
-                "Cannot find title of article on view page",
-                15
-        );
-
+        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
+        myListsPageObject.openFolderByName(nameOfFolder);
+        myListsPageObject.swipeByArticleToDelete(firstArticleTitle);
+        myListsPageObject.waitForArticleAndClick(secondArticleTitle);
+        String titleSecondArticleOnViewPage = articlePageObject.getArticleTitle();
         assertEquals(
                 "Article titles are not equals",
-                titleSecondArticleinList,
+                secondArticleTitle,
                 titleSecondArticleOnViewPage
         );
     }

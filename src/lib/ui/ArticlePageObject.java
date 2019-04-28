@@ -4,6 +4,8 @@ import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import static lib.ui.MyListsPageObject.getFolderXpathByName;
+
 public class ArticlePageObject extends  MainPageObject{
 
     public static final String
@@ -40,7 +42,7 @@ public class ArticlePageObject extends  MainPageObject{
        this.swipeUpToFindElement(By.xpath(FOOTER_ELEMENT),"Cannot find the end of article", 20);
     }
 
-    public  void addArticleToMyList(String nameOfFolder)
+    public  void createNewMyListAndAddArticle(String nameOfFolder)
     {
         this.waitForElementAndClick(
                 By.xpath(OPTIONS_BUTTON),
@@ -81,13 +83,35 @@ public class ArticlePageObject extends  MainPageObject{
 
     }
 
-    public void closeArticle() throws InterruptedException
+    public void addArticleToExistingMyList(String nameOfFolder)
     {
-        Thread.sleep(3000);
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_BUTTON),
+                "Cannot find button to open article options ",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON),
+                "Cannot find option to add article to reading list",
+                5
+        );
+
+        String folderNameXpath = getFolderXpathByName(nameOfFolder);
+        this.waitForElementAndClick(
+                By.xpath(folderNameXpath),
+                "Cannot find folder title by " + nameOfFolder,
+                15
+        );
+    }
+
+    public void closeArticle()
+    {
+
         this.waitForElementAndClick(
                 By.xpath(CLOSE_ARTICLE_BUTTON),
                 "Cannot close article, cannot find X link ",
-                5
+                10
         );
 
     }

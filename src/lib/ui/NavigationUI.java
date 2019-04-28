@@ -14,9 +14,8 @@ public class NavigationUI extends MainPageObject {
         super(driver);
     }
 
-    public void  clickMyLists() throws InterruptedException
+    public void  clickMyLists()
     {
-        Thread.sleep(3000);
         this.waitForElementAndClick(
                 By.xpath(MY_LISTS_LINK),
                 "Cannot find navigation button to My List ",
