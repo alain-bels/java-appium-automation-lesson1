@@ -1,7 +1,6 @@
 package Tests;
 
 import lib.CoreTestCase;
-import lib.ui.MainPageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -31,12 +30,13 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testPresentSearch() {
-        MainPageObject.waitForElementAndClick(
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find search 'Search Wikipedia' input",
                 10
         );
-        WebElement searchField = MainPageObject.waitForElementPresent(
+        WebElement searchField = searchPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/search_src_text"),
                 "Cannot find search field",
                 5
@@ -87,20 +87,21 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCheckWordsInResultsOfSearch() {
-        MainPageObject.waitForElementAndClick(
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find search 'Search Wikipedia' input",
                 10
         );
 
-        MainPageObject.waitForElementAndSendKeys(
+        searchPageObject.waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
                 "Word",
                 "Cannot find search input",
                 5
         );
 
-        MainPageObject.waitForElementPresent(
+        searchPageObject.waitForElementPresent(
                 By.id("org.wikipedia:id/search_results_list"),
                 "Cannot find search field",
                 5
