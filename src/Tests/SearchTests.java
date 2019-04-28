@@ -52,37 +52,16 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelSearchAndCheckResult() {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find search 'Search Wikipedia' input",
-                10
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        int amountOfSearchResults = searchPageObject.getAmountOfFoundArticles();
+        assertTrue(
+                "We found too few results!",
+                amountOfSearchResults > 1
         );
-
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "Word",
-                "Cannot find search input",
-                5
-        );
-
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/page_list_item_container']" +
-                        "//*[@index = 1]"),
-                "Cannot find second item",
-                10
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search",
-                5
-        );
-
-        MainPageObject.waitForElementNotPresent(
-                By.id("org.wikipedia:id/page_list_item_container"),
-                "Search result item is still present on the page",
-                5
-        );
+        searchPageObject.clickCancelSearch();
+        searchPageObject.assertThereIsNoResultOfSearch();
     }
 
     @Test
