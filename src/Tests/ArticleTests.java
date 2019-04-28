@@ -4,6 +4,7 @@ import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 public class ArticleTests extends CoreTestCase {
     @Test
@@ -41,5 +42,18 @@ public class ArticleTests extends CoreTestCase {
 
     }
 
+    @Test
+    public void testAssertTitle() {
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Java version history");
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        articlePageObject.waitForArticleHeaderContainerPresent();
 
+        articlePageObject.assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title"
+        );
+    }
 }

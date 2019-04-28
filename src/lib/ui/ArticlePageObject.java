@@ -16,7 +16,9 @@ public class ArticlePageObject extends  MainPageObject{
     ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
     MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
     MY_LIST_OK_BUTTON = "//*[@text = 'OK']",
-    CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc = 'Navigate up']";
+    CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc = 'Navigate up']",
+    ARTICLE_HEADER_CONTAINER = "org.wikipedia:id/view_page_header_container";
+
 
 
 
@@ -114,5 +116,14 @@ public class ArticlePageObject extends  MainPageObject{
                 10
         );
 
+    }
+
+    public void waitForArticleHeaderContainerPresent()
+    {
+        this.waitForElementPresent(
+                By.id(ARTICLE_HEADER_CONTAINER),
+                "Cannot find article header container",
+                10
+        );
     }
 }
