@@ -32,12 +32,12 @@ public class SearchTests extends CoreTestCase {
     public void testPresentSearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
+                "id:org.wikipedia:id/search_container",
                 "Cannot find search 'Search Wikipedia' input",
                 10
         );
         WebElement searchField = searchPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/search_src_text"),
+                "id:org.wikipedia:id/search_src_text",
                 "Cannot find search field",
                 5
         );
@@ -68,20 +68,20 @@ public class SearchTests extends CoreTestCase {
     public void testCheckWordsInResultsOfSearch() {
         SearchPageObject searchPageObject = new SearchPageObject(driver);
         searchPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
+                "id:org.wikipedia:id/search_container",
                 "Cannot find search 'Search Wikipedia' input",
                 10
         );
 
         searchPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
+                "xpath://*[contains(@text,'Search…')]",
                 "Word",
                 "Cannot find search input",
                 5
         );
 
         searchPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/search_results_list"),
+                "id:org.wikipedia:id/search_results_list",
                 "Cannot find search field",
                 5
         );
@@ -121,8 +121,5 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.typeSearchLine(searchLine);
         searchPageObject.waitForEmptyResultLabel();
         searchPageObject.assertThereIsNoResultOfSearch();
-
-
     }
-
 }
