@@ -2,6 +2,7 @@ package Tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -11,7 +12,7 @@ import java.util.List;
 public class SearchTests extends CoreTestCase {
     @Test
     public void testSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         searchPageObject.waitForSearchResult("Object-oriented programming language");
@@ -20,8 +21,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.waitForCancelButtonToAppear();
         searchPageObject.clickCancelSearch();
@@ -30,7 +30,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testPresentSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.waitForElementAndClick(
                 "id:org.wikipedia:id/search_container",
                 "Cannot find search 'Search Wikipedia' input",
@@ -52,7 +52,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelSearchAndCheckResult() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
         int amountOfSearchResults = searchPageObject.getAmountOfFoundArticles();
@@ -66,7 +66,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCheckWordsInResultsOfSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.waitForElementAndClick(
                 "id:org.wikipedia:id/search_container",
                 "Cannot find search 'Search Wikipedia' input",
@@ -99,8 +99,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testAmountOfNotEmptySearch() {
 
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         String searchLine = "Linkin Park Discography";
         searchPageObject.typeSearchLine(searchLine);
@@ -114,8 +113,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         String searchLine = "zxcgsgsu";
         searchPageObject.typeSearchLine(searchLine);
