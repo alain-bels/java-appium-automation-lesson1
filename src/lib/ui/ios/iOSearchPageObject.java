@@ -12,7 +12,7 @@ public class iOSearchPageObject extends SearchPageObject
         SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://XCUIElementTypeLink[contains(@name, '{SUBSTRING}')]";
         SEARCH_RESULT_ELEMENT = "xpath://XCUIElementTypeLink";
         SEARCH_EMPTY_RESULT_ELEMENT = "xpath://XCUIElementTypeStaticText[@name = 'No results found']";
-
+        SEARCH_FIELD_SAVED = "xpath://XCUIElementTypeSearchField[@name='Search']";
     }
 
    public iOSearchPageObject(AppiumDriver driver)

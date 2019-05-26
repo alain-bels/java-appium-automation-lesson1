@@ -89,24 +89,18 @@ abstract public class ArticlePageObject extends MainPageObject {
 
     }
 
-    public void addArticleToExistingMyList(String nameOfFolder) {
+    public void addArticleToExistingMyList(String nameOfFolder) throws Exception {
+        Thread.sleep(2000);
         this.waitForElementAndClick(
                 OPTIONS_BUTTON,
                 "Cannot find button to open article options ",
                 5
         );
-
+        Thread.sleep(2000);
         this.waitForElementAndClick(
                 OPTIONS_ADD_TO_MY_LIST_BUTTON,
                 "Cannot find option to add article to reading list",
                 5
-        );
-
-        String folderNameXpath = getFolderXpathByName(nameOfFolder);
-        this.waitForElementAndClick(
-                folderNameXpath,
-                "Cannot find folder title by " + nameOfFolder,
-                15
         );
     }
 

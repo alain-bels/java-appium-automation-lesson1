@@ -8,6 +8,10 @@ import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class MyListsTests extends CoreTestCase {
 
@@ -35,8 +39,6 @@ public class MyListsTests extends CoreTestCase {
 
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyLists();
-
-        //Thread.sleep(5000);
         navigationUI.closePopup();
 
         MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
@@ -59,31 +61,51 @@ public class MyListsTests extends CoreTestCase {
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
-        String firstArticleTitle = articlePageObject.getArticleTitle();
-        String nameOfFolder = "Learning programming";
-        articlePageObject.createNewMyListAndAddArticle(nameOfFolder);
+        String articleTitle = articlePageObject.getArticleTitle();
+
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.createNewMyListAndAddArticle(nameOfFolder);
+        } else {
+            articlePageObject.addArticlesToMySaved();
+        }
+        Thread.sleep(3000);
         articlePageObject.closeArticle();
 
         searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine("Java");
+        if (Platform.getInstance().isAndroid()) {
+            searchPageObject.typeSearchLine("Java");
+        }
         searchPageObject.clickByArticleWithSubstring("Island of Indonesia");
-        articlePageObject.waitForTitleElement();
-        String secondArticleTitle = articlePageObject.getArticleTitle();
-        articlePageObject.addArticleToExistingMyList(nameOfFolder);
-        articlePageObject.closeArticle();
+
+        MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
+
+        ArticlePageObject secondArticlePageObject = ArticlePageObjectFactory.get(driver);
+        if (Platform.getInstance().isAndroid()) {
+            secondArticlePageObject.addArticleToExistingMyList(nameOfFolder);
+            myListsPageObject.openFolderByName(nameOfFolder);
+        } else {
+            secondArticlePageObject.addArticlesToMySaved();
+        }
+        Thread.sleep(3000);
+        secondArticlePageObject.closeArticle();
 
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyLists();
 
-        MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
-        myListsPageObject.openFolderByName(nameOfFolder);
-        myListsPageObject.swipeByArticleToDelete(firstArticleTitle);
-        myListsPageObject.waitForArticleAndClick(secondArticleTitle);
-        String titleSecondArticleOnViewPage = articlePageObject.getArticleTitle();
-        assertEquals(
-                "Article titles are not equals",
-                secondArticleTitle,
-                titleSecondArticleOnViewPage
-        );
+        if (Platform.getInstance().isAndroid()) {
+            Thread.sleep(3000);
+            myListsPageObject.openFolderByName(nameOfFolder);
+        } else {
+            navigationUI.closePopup();
+        }
+
+        myListsPageObject.swipeByArticleToDelete(articleTitle);
+        if (Platform.getInstance().isAndroid()) {
+            myListsPageObject.openSearchInFolder();
+            searchPageObject.typeSearchLineInSaved("Java");
+        } else {
+            searchPageObject.typeSearchLineInSaved("Island of Indonesia");
+        }
+        myListsPageObject.assertSavedListNotEmpty();
     }
 }

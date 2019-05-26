@@ -180,6 +180,14 @@ public class MainPageObject {
         return element.getAttribute(attribute);
     }
 
+    public void assertElementPresent(String locator, String error_message) {
+        int amountOfElements = getAmountOfElements(locator);
+        if (amountOfElements == 0) {
+            String defaultMessage = "An element'" + locator + "'supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + error_message);
+        }
+    }
+
     public void assertElementPresent(By by, String error_message) {
         WebElement element = driver.findElement(by);
         if (element == null) {

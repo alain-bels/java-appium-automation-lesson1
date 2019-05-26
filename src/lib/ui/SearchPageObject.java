@@ -4,13 +4,14 @@ import io.appium.java_client.AppiumDriver;
 
 abstract public class SearchPageObject extends MainPageObject {
 
-     protected static  String
+    protected static String
             SEARCH_INIT_ELEMENT,
             SEARCH_INPUT,
             SEARCH_CANCEL_BUTTON,
             SEARCH_RESULT_BY_SUBSTRING_TPL,
             SEARCH_RESULT_ELEMENT,
-            SEARCH_EMPTY_RESULT_ELEMENT;
+            SEARCH_EMPTY_RESULT_ELEMENT,
+            SEARCH_FIELD_SAVED;
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -25,7 +26,6 @@ abstract public class SearchPageObject extends MainPageObject {
     public void initSearchInput() {
         this.waitForElementAndClick(SEARCH_INIT_ELEMENT, "Cannot find and click search init element", 5);
         this.waitForElementPresent(SEARCH_INIT_ELEMENT, "Cannot find search input after clicking search init element");
-
     }
 
     public void waitForCancelButtonToAppear() {
@@ -41,7 +41,15 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void typeSearchLine(String search_line) {
-        this.waitForElementAndSendKeys(SEARCH_INPUT, search_line, "Cannot find and type into search input", 5);
+        searchLine(search_line, SEARCH_INPUT);
+    }
+
+    public void typeSearchLineInSaved(String search_line) {
+        searchLine(search_line, SEARCH_FIELD_SAVED);
+    }
+
+    private void searchLine(String search_line, String locator) {
+        this.waitForElementAndSendKeys(locator, search_line, "Cannot find and type into search input", 5);
     }
 
     public void waitForSearchResult(String substring) {
